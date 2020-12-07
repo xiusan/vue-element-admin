@@ -92,7 +92,11 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/shop'
+import { fetchList,
+  addUser,
+  updateUser,
+  deleteUser
+} from '@/api/shop'
 
 export default {
   name: 'Item',
@@ -116,19 +120,6 @@ export default {
   }, // 钩子函数,当实例创建完成之后发起请求
   created() {
     console.log('加载客户列表...')
-    //  jQuery
-    //   $.get("http://localhost:8081/api/api/getAllUserSimple", function(res) {
-    //     this.tableData = res.data;
-    //   })
-    // this.$axios.get("/api/api/getAllUserSimple")
-    // .then(res => {
-    //    console.log("加载客户列表..."+res.data.data);
-    //   this.tableData = res.data.data;
-    //   console.log("success===>" + JSON.stringify(res));
-    // })
-    // .catch(error => {
-    //   console.log("error====>" + JSON.stringify(error));
-    // });
 
     this.fetchData()
   },
@@ -172,7 +163,7 @@ export default {
           // 确认删除
           console.log(row.id + '删除次id数据')
           // axios 执行后台的请求 进行删除
-          this.$axios.get('/api/api/delete/' + row.id).then(res => {
+          deleteUser(row.id).then(res => {
             this.$message({
               message: '用户删除成功',
               type: 'success'
@@ -194,24 +185,9 @@ export default {
         name: this.search.name,
         address: this.search.address
       }
-      /*
-      this.$axios
-        .get(
-          `/api/customer/list?page=${this.currentPage}&limit=${this.pageSize}&username=${this.search.username}&address=${this.search.address}`
-        )
-        .then(res => {
-          //当前页数据
-          this.tableData = res.data.data.data;
-          //总条数
-          this.total = res.data.data.total;
-          console.log("success===>" + JSON.stringify(res));
-        })
-        .catch(error => {
-          console.log("error====>" + JSON.stringify(error));
-        });*/
+
       fetchList(query).then(res => {
         console.log('query===>' + JSON.stringify(query))
-        console.log('success===>' + JSON.stringify(res))
         // 当前页数据
         this.tableData = res.data.records
         // 总条数
@@ -229,37 +205,36 @@ export default {
       console.log(JSON.stringify(this.customer))
       if (this.customer.id) {
         // 编辑
-        this.$axios
-          .post('/api/customer/update', this.customer)
-          .then(res => {
-            if (res.data.code == 200) {
-              this.$message({
-                message: '用户编辑成功',
-                type: 'success'
-              })
-              // 刷新表格
-              this.fetchData()
-            } else {
-              this.$message.error('用户编辑失败')
-            }
-          })
+        updateUser(this.customer).then(res => {
+          if (res.code == 20000) {
+            this.$message({
+              message: '用户编辑成功',
+              type: 'success'
+            })
+            // 刷新表格
+            this.fetchData()
+          } else {
+            this.$message.error('用户编辑失败')
+          }
+        })
           .catch(error => {})
       } else {
         // 新增
-        this.$axios
-          .post('/api/api/addUser', this.customer)
-          .then(res => {
-            if (res.data.code == 200) {
-              this.$message({
-                message: '用户新增成功',
-                type: 'success'
-              })
-              // 刷新表格
-              this.fetchData()
-            } else {
-              this.$message.error('用户新增失败')
-            }
-          })
+        // this.$axios
+        // .post('/api/api/addUser', this.customer)
+        addUser(this.customer).then(res => {
+          console.log(JSON.stringify(this.customer))
+          if (res.code == 20000) {
+            this.$message({
+              message: '用户新增成功',
+              type: 'success'
+            })
+            // 刷新表格
+            this.fetchData()
+          } else {
+            this.$message.error('用户新增失败')
+          }
+        })
           .catch(error => {})
       }
     }
