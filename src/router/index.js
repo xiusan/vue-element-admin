@@ -51,6 +51,36 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/shopping',
+    component: Layout,
+    redirect: '/shopping/itme',
+    alwaysShow: true, // will always show the root menu
+    name: 'shopping',
+    meta: {
+      title: '商品管理',
+      icon: 'shopping'
+    },
+    children: [
+      {
+        path: 'item',
+        component: () => import('@/views/shopping/itme'),
+        name: 'Item',
+        meta: {
+          title: '商品管理'
+        }
+      },
+      {
+        path: 'classify',
+        component: () => import('@/views/shopping/classify'),
+        name: 'Classify',
+        meta: {
+          title: '分类管理'
+          // if do not set roles, means: this page does not require permission
+        }
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -92,44 +122,6 @@ export const constantRoutes = [
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
         meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/shopping',
-    component: Layout,
-    redirect: '/shopping/itime',
-    alwaysShow: true, // will always show the root menu
-    name: 'shopping',
-    meta: {
-      title: '商品管理',
-      icon: 'shopping'
-    },
-    children: [
-      {
-        path: 'item',
-        component: () => import('@/views/shopping/itime'),
-        name: 'Item',
-        meta: {
-          title: '商品管理'
-        }
-      },
-      {
-        path: 'classify',
-        component: () => import('@/views/shopping/classify'),
-        name: 'Classify',
-        meta: {
-          title: '分类管理'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'activity',
-        component: () => import('@/views/shopping/activity'),
-        name: 'Activity',
-        meta: {
-          title: '活动管理'
-        }
       }
     ]
   },
