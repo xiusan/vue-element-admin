@@ -2,11 +2,12 @@ import request from '@/utils/request'
 // 查询
 export function fetchList(query) {
   return request({
-    url: '/api/getAllUser',
+    url: '/api/getAllItem',
     method: 'get',
     params: query,
-    baseURL: process.env.VUE_APP_BASE_API_V2 // '/api'
+    baseURL: process.env.VUE_APP_BASE_API_V2 // '/api--'
   })
+
 }
 // 添加 这里会出现问题  java.io.EOFException: Unexpected EOF read on the socket  是因为
 // mock数据消费的body数据引起的  注释掉mock-server.js -->app.use(bodyParser.json()) 即可
