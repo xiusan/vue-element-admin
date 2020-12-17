@@ -7,7 +7,6 @@ export function fetchList(query) {
     params: query,
     baseURL: process.env.VUE_APP_BASE_API_V2 // '/api--'
   })
-
 }
 // 添加 这里会出现问题  java.io.EOFException: Unexpected EOF read on the socket  是因为
 // mock数据消费的body数据引起的  注释掉mock-server.js -->app.use(bodyParser.json()) 即可
@@ -32,6 +31,15 @@ export function updateUser(data) {
 export function deleteUser(userId) {
   return request({
     url: '/api/delete/' + userId,
+    method: 'get',
+    baseURL: process.env.VUE_APP_BASE_API_V2 // '/api'
+  })
+}
+
+// 上下架操作
+export function upDateShop(id, status) {
+  return request({
+    url: '/api/upDateShop/' + id + '/' + status,
     method: 'get',
     baseURL: process.env.VUE_APP_BASE_API_V2 // '/api'
   })
